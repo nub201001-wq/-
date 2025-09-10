@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>БУДЕ піТЦА — швидко</title>
+  <title>Переказ коштів</title>
   <style>
     :root{
       --card-bg: rgba(255,255,255,0.96);
+      --accent: #1ba548;
       --radius: 14px;
     }
     html,body{height:100%;margin:0}
@@ -18,12 +19,9 @@
       padding:24px;
       background: url("cake.png") no-repeat center bottom;
       background-size: cover;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
     }
     .overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,0.08);
       pointer-events: none;
       z-index: 0;
@@ -32,99 +30,98 @@
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 440px;
+      max-width: 420px;
       background: var(--card-bg);
       border-radius: var(--radius);
       box-shadow: 0 10px 30px rgba(0,0,0,0.18);
       padding: 22px;
       text-align: center;
     }
-    h1 { margin: 0 0 6px 0; font-size: 20px; line-height: 1.1; }
-    p.lead { margin:0 0 14px 0; color:#444; font-size:14px; }
+    h1 { margin: 0 0 6px; font-size: 20px; }
+    p.lead { margin:0 0 14px; color:#444; font-size:14px; }
     .gift { font-size:42px; margin-bottom:8px; }
 
-    .banks {
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      margin-top:6px;
-    }
+    .banks { display:flex; flex-direction:column; gap:12px; margin-top:6px; }
     .bank-btn {
       display:grid;
       grid-template-columns: 48px 1fr;
-      gap:12px;
-      align-items:center;
+      gap:12px; align-items:center;
       background:#fff;
       border:1px solid #e6e6e6;
       border-radius:10px;
       padding:10px 14px;
       text-decoration:none;
-      color:#111;
-      font-weight:600;
-      font-size:15px;
+      color:#111; font-weight:600; font-size:15px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
       cursor:pointer;
       transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
     .bank-btn img { width:48px; height:auto; object-fit:contain; }
     .bank-btn .label { text-align:left; }
-    .bank-btn:active { transform: translateY(1px) }
     .bank-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 6px 16px rgba(0,0,0,0.12);
       background:#fafafa;
     }
+
     @media (max-width:420px){
       .wrap { padding:18px; border-radius:12px; max-width:94vw; }
       .bank-btn { padding:12px 14px; font-size:16px; grid-template-columns: 44px 1fr; gap:10px; }
       .bank-btn img { width:42px; }
     }
+
     .toast {
       position: fixed;
-      left: 50%;
+      left: 50%; bottom: 26px;
       transform: translateX(-50%);
-      bottom: 26px;
-      background: #111;
-      color: #fff;
+      background: #111; color: #fff;
       padding: 10px 16px;
       border-radius: 10px;
       box-shadow: 0 6px 20px rgba(0,0,0,0.25);
       opacity: 0;
-      pointer-events: none;
       transition: opacity .18s ease, transform .18s ease;
       z-index: 9999;
       font-weight:600;
     }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); pointer-events:auto; }
-    .qr {
-      margin: 18px auto 8px auto;
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+
+    /* ---- Модалка ---- */
+    .modal {
+      position: fixed; inset:0;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s ease;
+      z-index: 10000;
     }
-    .qr img {
-      width: 140px;
-      height: auto;
+    .modal.show { opacity:1; pointer-events:auto; }
+    .modal-content {
+      background:#fff; border-radius:12px;
+      padding:20px; max-width:360px; width:92%;
+      text-align:center;
+      box-shadow:0 8px 30px rgba(0,0,0,.25);
     }
-    .details {
-      margin-top: 14px;
-      font-size: 10px;
-      line-height: 1.35;
-      color: #555;
-      text-align: left;
-      word-break: break-word;
+    .modal-content img { width:220px; margin:10px auto; }
+    .modal-content button {
+      margin-top:12px;
+      background:#1ba548; color:#fff;
+      border:none; padding:10px 16px;
+      border-radius:8px; cursor:pointer;
+      font-weight:600; font-size:15px;
     }
+    .modal-content .small { font-size:11px; color:#444; margin-top:10px; white-space:pre-line; }
   </style>
 </head>
 <body>
-  <div class="overlay" aria-hidden="true"></div>
-  <main class="wrap" role="main" aria-labelledby="title">
-    <div class="gift" aria-hidden="true">🎁</div>
-    <h1 id="title">200₴ UAH на ДР</h1>
+  <div class="overlay"></div>
+  <main class="wrap">
+    <div class="gift">🎁</div>
+    <h1>200₴ UAH на ДР</h1>
     <p class="lead">Номер картки автоматично копіюється при натисканні — потім відкриється додаток/сайт банку.</p>
 
-    <div class="qr">
-      <img src="qr.png" alt="QR для Приват24">
-    </div>
-
-    <div class="banks" role="list">
+    <div class="banks">
       <button class="bank-btn" data-bank="privat" type="button">
         <img src="logo/Privat24_Logo.png" alt="Privat24">
         <span class="label">Приват24</span>
@@ -146,102 +143,77 @@
         <span class="label">А-Банк</span>
       </button>
     </div>
-
-    <div class="details">
-      <strong>Отримувач</strong><br>
-      АДАМОВИЧ ВІТАЛІЙ ОЛЕКСАНДРОВИЧ<br><br>
-      <strong>IBAN</strong><br>
-      UA613052990262086400961332478<br><br>
-      <strong>РНОКПП/ЄДРПОУ</strong><br>
-      3561411831<br><br>
-      <strong>Призначення платежу</strong><br>
-      Поповнення рахунку, АДАМОВИЧ ВІТАЛІЙ ОЛЕКСАНДРОВИЧ
-    </div>
   </main>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast"></div>
 
-<script>
-const CARD_NUMBER = "5168745611673218";
+  <!-- Модалка з QR -->
+  <div id="qrModal" class="modal">
+    <div class="modal-content">
+      <h3>Відскануйте у Приват24</h3>
+      <img src="qr.png" alt="QR Privat24">
+      <button id="openWebPrivat">Відкрити через веб</button>
+      <div class="small">
+Отримувач
+АДАМОВИЧ ВІТАЛІЙ ОЛЕКСАНДРОВИЧ
+IBAN
+UA613052990262086400961332478
+РНОКПП/ЄДРПОУ
+3561411831
+Призначення платежу
+Поповнення рахунку, АДАМОВИЧ ВІТАЛІЙ ОЛЕКСАНДРОВИЧ
+      </div>
+    </div>
+  </div>
 
-const BANKS = {
-  privat: {
-    app: `privat24://sendmoney?card=${CARD_NUMBER}`,
-    web: `https://next.privat24.ua/money-transfer/card?card=${CARD_NUMBER}`
-  },
-  mono: {
-    app: `monobank://transfer?recipient=${CARD_NUMBER}`,
-    web: `https://send.monobank.ua/?card=${CARD_NUMBER}`
-  },
-  oschad: {
-    app: `oschadbank://payment?card=${CARD_NUMBER}`,
-    web: `https://online.oschadbank.ua/`
-  },
-  pumb: {
-    app: `pumb://payment?card=${CARD_NUMBER}`,
-    web: `https://online.pumb.ua/`
-  },
-  abank: {
-    app: `abank://payment?card=${CARD_NUMBER}`,
-    web: `https://a-bank.com.ua/`
-  }
-};
+  <script>
+    const CARD_NUMBER = "5168745611673218";
 
-function showToast(text, ms = 1600) {
-  const toast = document.getElementById('toast');
-  toast.textContent = text;
-  toast.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(()=> toast.classList.remove('show'), ms);
-}
+    const BANKS = {
+      mono: { web: `https://send.monobank.ua/?card=${CARD_NUMBER}` },
+      oschad: { web: `https://online.oschadbank.ua/` },
+      pumb: { web: `https://online.pumb.ua/` },
+      abank: { web: `https://a-bank.com.ua/` }
+    };
 
-async function copyCardNumber() {
-  try {
-    await navigator.clipboard.writeText(CARD_NUMBER);
-    return true;
-  } catch (e) {
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = CARD_NUMBER;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      return true;
-    } catch (err) {
-      return false;
+    function showToast(text, ms=1600){
+      const toast=document.getElementById('toast');
+      toast.textContent=text;
+      toast.classList.add('show');
+      clearTimeout(toast._t);
+      toast._t=setTimeout(()=>toast.classList.remove('show'),ms);
     }
-  }
-}
 
-function openAppOrWeb(appUrl, webUrl) {
-  if (!appUrl) { window.open(webUrl, "_blank"); return; }
-  const start = Date.now();
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = appUrl;
-  document.body.appendChild(iframe);
-  setTimeout(() => {
-    document.body.removeChild(iframe);
-    if (Date.now() - start < 1200) {
-      window.open(webUrl, "_blank");
+    async function copyCardNumber(){
+      try{
+        await navigator.clipboard.writeText(CARD_NUMBER);
+        return true;
+      }catch(e){
+        return false;
+      }
     }
-  }, 900);
-}
 
-async function onBankClick(e) {
-  const btn = e.currentTarget;
-  const key = btn.dataset.bank;
-  const bank = BANKS[key];
-  const ok = await copyCardNumber();
-  if (ok) showToast(" ГОТОВО ✅ ТЕПЕР СТАВ 200 І НАЖИМАЙ ВІДПРАВИТИ");
-  else showToast("Не вдалося скопіювати — скопіюй вручну", 2800);
-  setTimeout(() => openAppOrWeb(bank.app, bank.web), 400);
-}
+    document.querySelectorAll('.bank-btn').forEach(btn=>{
+      btn.addEventListener('click', async e=>{
+        const bank = e.currentTarget.dataset.bank;
+        const ok = await copyCardNumber();
+        if (ok) showToast("Номер картки скопійовано ✅");
+        else showToast("Скопіюй вручну", 2200);
 
-document.querySelectorAll('.bank-btn').forEach(btn=>{
-  btn.addEventListener('click', onBankClick);
-});
-</script>
+        if(bank==="privat"){
+          document.getElementById('qrModal').classList.add('show');
+        }else{
+          setTimeout(()=> window.open(BANKS[bank].web,"_blank"),400);
+        }
+      });
+    });
+
+    document.getElementById('openWebPrivat').onclick = ()=>{
+      window.open(`https://next.privat24.ua/money-transfer/card?card=${CARD_NUMBER}`,"_blank");
+    };
+    document.getElementById('qrModal').addEventListener('click',e=>{
+      if(e.target.id==="qrModal") e.currentTarget.classList.remove('show');
+    });
+  </script>
 </body>
 </html>
