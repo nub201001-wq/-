@@ -8,16 +8,26 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 30px;
-            background-color: #f4f4f4;
+            background: url("https://i.ibb.co/1sHLqsy/birthday-bg.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: #222;
         }
         .card-number {
             font-size: 24px;
             font-weight: bold;
             margin-top: 20px;
             margin-bottom: 10px;
+            background: rgba(255,255,255,0.8);
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
         }
         .qr-code {
             margin-top: 20px;
+            background: rgba(255,255,255,0.8);
+            display: inline-block;
+            padding: 15px;
+            border-radius: 15px;
         }
         button {
             padding: 10px 20px;
@@ -27,6 +37,7 @@
             color: white;
             border: none;
             border-radius: 5px;
+            margin-top: 20px;
         }
         button:hover {
             background-color: #006f3c;
@@ -35,7 +46,7 @@
 </head>
 <body>
 
-    <h1>Переказ коштів</h1>
+    <h1>🎂 Переказ коштів 🎉</h1>
     <p>Скористайтеся QR-кодом або скопіюйте номер картки для переказу</p>
 
     <div class="qr-code">
@@ -44,6 +55,7 @@
 
     <div class="card-number" id="card-number">5168 7456 1167 3218</div>
     
+    <br>
     <button onclick="copyToClipboard()">Скопіювати номер картки</button>
 
     <script>
@@ -57,4 +69,3 @@
 
 </body>
 </html>
-
