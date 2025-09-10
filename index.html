@@ -7,10 +7,8 @@
   <style>
     :root{
       --card-bg: rgba(255,255,255,0.96);
-      --accent: #1ba548;
       --radius: 14px;
     }
-
     html,body{height:100%;margin:0}
     body{
       font-family: Inter, Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -23,8 +21,6 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
-
-    /* затемнення фону під контейнером щоб контент читався краще */
     .overlay {
       position: fixed;
       inset: 0;
@@ -32,43 +28,27 @@
       pointer-events: none;
       z-index: 0;
     }
-
     .wrap {
       position: relative;
       z-index: 2;
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       background: var(--card-bg);
       border-radius: var(--radius);
       box-shadow: 0 10px 30px rgba(0,0,0,0.18);
       padding: 22px;
       text-align: center;
     }
+    h1 { margin: 0 0 6px 0; font-size: 20px; line-height: 1.1; }
+    p.lead { margin:0 0 14px 0; color:#444; font-size:14px; }
+    .gift { font-size:42px; margin-bottom:8px; }
 
-    h1 {
-      margin: 0 0 6px 0;
-      font-size: 20px;
-      line-height: 1.1;
-    }
-    p.lead {
-      margin:0 0 14px 0;
-      color:#444;
-      font-size:14px;
-    }
-
-    .gift {
-      font-size:42px;
-      margin-bottom:8px;
-    }
-
-    /* Кнопки як у магазину — білі картки з логотипом ліворуч */
     .banks {
       display:flex;
       flex-direction:column;
       gap:12px;
       margin-top:6px;
     }
-
     .bank-btn {
       display:grid;
       grid-template-columns: 48px 1fr;
@@ -86,29 +66,19 @@
       cursor:pointer;
       transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
     }
-    .bank-btn img {
-      width:48px;
-      height:auto;
-      object-fit:contain;
-    }
-    .bank-btn .label {
-      text-align:left;
-    }
+    .bank-btn img { width:48px; height:auto; object-fit:contain; }
+    .bank-btn .label { text-align:left; }
     .bank-btn:active { transform: translateY(1px) }
     .bank-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 6px 16px rgba(0,0,0,0.12);
       background:#fafafa;
     }
-
-    /* мобільні → більші кнопки та відступи */
     @media (max-width:420px){
       .wrap { padding:18px; border-radius:12px; max-width:94vw; }
       .bank-btn { padding:12px 14px; font-size:16px; grid-template-columns: 44px 1fr; gap:10px; }
       .bank-btn img { width:42px; }
     }
-
-    /* toast повідомлення */
     .toast {
       position: fixed;
       left: 50%;
@@ -126,85 +96,97 @@
       font-weight:600;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); pointer-events:auto; }
+    .qr {
+      margin: 18px auto 8px auto;
+    }
+    .qr img {
+      width: 140px;
+      height: auto;
+    }
+    .details {
+      margin-top: 14px;
+      font-size: 10px;
+      line-height: 1.35;
+      color: #555;
+      text-align: left;
+      word-break: break-word;
+    }
   </style>
 </head>
 <body>
-
   <div class="overlay" aria-hidden="true"></div>
-
   <main class="wrap" role="main" aria-labelledby="title">
     <div class="gift" aria-hidden="true">🎁</div>
     <h1 id="title">200₴ UAH на ДР</h1>
     <p class="lead">Номер картки автоматично копіюється при натисканні — потім відкриється додаток/сайт банку.</p>
 
-    <!-- Кнопки (використовуємо <button> щоб JS контролював відкриття) -->
+    <div class="qr">
+      <img src="qr.png" alt="QR для Приват24">
+    </div>
+
     <div class="banks" role="list">
-      <button class="bank-btn" data-bank="privat" aria-label="Приват24 — скопіювати і відкрити" type="button">
+      <button class="bank-btn" data-bank="privat" type="button">
         <img src="logo/Privat24_Logo.png" alt="Privat24">
         <span class="label">Приват24</span>
       </button>
-
-      <button class="bank-btn" data-bank="mono" aria-label="Monobank — скопіювати і відкрити" type="button">
+      <button class="bank-btn" data-bank="mono" type="button">
         <img src="logo/Monobank_logo.svg.png" alt="Monobank">
         <span class="label">Monobank</span>
       </button>
-
-      <button class="bank-btn" data-bank="oschad" aria-label="Ощадбанк — скопіювати і відкрити" type="button">
+      <button class="bank-btn" data-bank="oschad" type="button">
         <img src="logo/Oschadbank_(uk).png" alt="Ощадбанк">
         <span class="label">Ощадбанк</span>
       </button>
-
-      <button class="bank-btn" data-bank="pumb" aria-label="ПУМБ — скопіювати і відкрити" type="button">
+      <button class="bank-btn" data-bank="pumb" type="button">
         <img src="logo/Pumb_logo.svg.png" alt="ПУМБ">
         <span class="label">ПУМБ</span>
       </button>
-
-      <button class="bank-btn" data-bank="abank" aria-label="А-Банк — скопіювати і відкрити" type="button">
+      <button class="bank-btn" data-bank="abank" type="button">
         <img src="logo/Abank_logo.svg.png" alt="A-Bank">
         <span class="label">А-Банк</span>
       </button>
+    </div>
+
+    <div class="details">
+      <strong>Отримувач</strong><br>
+      АДАМОВИЧ ВІТАЛІЙ ОЛЕКСАНДРОВИЧ<br><br>
+      <strong>IBAN</strong><br>
+      UA613052990262086400961332478<br><br>
+      <strong>РНОКПП/ЄДРПОУ</strong><br>
+      3561411831<br><br>
+      <strong>Призначення платежу</strong><br>
+      Поповнення рахунку, АДАМОВИЧ ВІТАЛІЙ ОЛЕКСАНДРОВИЧ
     </div>
   </main>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
-/*
-  Повний JS для:
-  - копіювання номера картки
-  - спроби відкриття додатку (deeplink) і fallback на веб
-  - показу toast повідомлення
-*/
+const CARD_NUMBER = "5168745611673218";
 
-const CARD_NUMBER = "5168745611673218"; // змінити тут при потребі
-
-// Налаштування: для кожного банку — схема додатку (appScheme) та веб fallback (webUrl).
-// Примітка: appScheme може не працювати у всіх версіях додатків/платформах.
-// Якщо додаток встановлено і підтримує схему — воно відкриється, інакше відкриється веб-фолбек.
 const BANKS = {
   privat: {
-    app: `privat24://sendmoney?card=${CARD_NUMBER}`, // умовна
+    app: `privat24://sendmoney?card=${CARD_NUMBER}`,
     web: `https://next.privat24.ua/money-transfer/card?card=${CARD_NUMBER}`
   },
   mono: {
-    app: `monobank://transfer?recipient=${CARD_NUMBER}`, // умовна
+    app: `monobank://transfer?recipient=${CARD_NUMBER}`,
     web: `https://send.monobank.ua/?card=${CARD_NUMBER}`
   },
   oschad: {
-    app: `oschadbank://payment?card=${CARD_NUMBER}`, // умовна
+    app: `oschadbank://payment?card=${CARD_NUMBER}`,
     web: `https://online.oschadbank.ua/`
   },
   pumb: {
-    app: `pumb://payment?card=${CARD_NUMBER}`, // умовна
+    app: `pumb://payment?card=${CARD_NUMBER}`,
     web: `https://online.pumb.ua/`
   },
   abank: {
-    app: `abank://payment?card=${CARD_NUMBER}`, // умовна
+    app: `abank://payment?card=${CARD_NUMBER}`,
     web: `https://a-bank.com.ua/`
   }
 };
 
-// Показ toast
 function showToast(text, ms = 1600) {
   const toast = document.getElementById('toast');
   toast.textContent = text;
@@ -213,13 +195,11 @@ function showToast(text, ms = 1600) {
   toast._t = setTimeout(()=> toast.classList.remove('show'), ms);
 }
 
-// Копіювання номера в буфер
 async function copyCardNumber() {
   try {
     await navigator.clipboard.writeText(CARD_NUMBER);
     return true;
   } catch (e) {
-    // fallback: створити textarea і скопіювати
     try {
       const ta = document.createElement('textarea');
       ta.value = CARD_NUMBER;
@@ -234,62 +214,34 @@ async function copyCardNumber() {
   }
 }
 
-// Спроба відкрити додаток (deeplink), і якщо не вдалось — відкрити веб.
-// Метод використовує iframe (хитрість для iOS) + timeout fallback.
 function openAppOrWeb(appUrl, webUrl) {
-  const ua = navigator.userAgent || "";
-  const isMobile = /iphone|ipad|ipod|android/i.test(ua);
-
-  // Якщо немає appUrl — просто відкрити webUrl
-  if (!appUrl) {
-    window.open(webUrl, "_blank");
-    return;
-  }
-
+  if (!appUrl) { window.open(webUrl, "_blank"); return; }
   const start = Date.now();
-
-  // Спроба через iframe (часто працює на iOS)
   const iframe = document.createElement('iframe');
   iframe.style.display = 'none';
   iframe.src = appUrl;
   document.body.appendChild(iframe);
-
-  // Після 700-900ms — відкриваємо веб (якщо нічого не сталося)
   setTimeout(() => {
     document.body.removeChild(iframe);
-    const elapsed = Date.now() - start;
-    // Якщо після спроби додаток не відкрився — відкриваємо веб.
-    // (Немає 100% способу визначити чи додаток відкрився; це best-effort)
-    if (elapsed < 1200) {
-      // відкриваємо веб-лінк у новому вікні/вкладці
+    if (Date.now() - start < 1200) {
       window.open(webUrl, "_blank");
     }
   }, 900);
 }
 
-// Обробник натискання на кнопку
 async function onBankClick(e) {
   const btn = e.currentTarget;
   const key = btn.dataset.bank;
   const bank = BANKS[key];
-
-  // 1) копіюємо номер
   const ok = await copyCardNumber();
-  if (ok) showToast("Номер картки скопійовано ✅");
+  if (ok) showToast(" ГОТОВО ✅ ТЕПЕР СТАВ 200 І НАЖИМАЙ ВІДПРАВИТИ");
   else showToast("Не вдалося скопіювати — скопіюй вручну", 2800);
-
-  // 2) пробуємо відкрити додаток або веб (через невеликий таймаут щоб користувач встиг прочитати toast)
-  setTimeout(() => {
-    openAppOrWeb(bank.app, bank.web);
-  }, 400);
+  setTimeout(() => openAppOrWeb(bank.app, bank.web), 400);
 }
 
-// Прив'язуємо обробники
 document.querySelectorAll('.bank-btn').forEach(btn=>{
   btn.addEventListener('click', onBankClick);
 });
-
 </script>
 </body>
 </html>
-
