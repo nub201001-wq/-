@@ -2,66 +2,90 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Переказ коштів</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 30px;
       margin: 0;
-      background: url("8701f444-db52-4d38-a922-25aa36353011.png") no-repeat center/cover fixed;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: url("cake.png") no-repeat center/cover fixed;
     }
-    .wrap {
-      max-width: 500px;
-      margin: auto;
-      background: rgba(255, 255, 255, 0.92);
+
+    .card {
+      background: rgba(255,255,255,0.95);
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
     }
-    img {
-      margin: 20px 0;
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
     }
-    button {
+
+    p {
+      margin: 0 0 16px;
+      color: #333;
+    }
+
+    .qr {
+      margin: 16px 0;
+    }
+
+    .btn {
       display: block;
       width: 100%;
       margin: 8px 0;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: bold;
+      padding: 12px;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      border-radius: 6px;
       color: white;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
     }
-    .privat { background: #24a647; }
-    .mono { background: #000000; }
-    .oschad { background: #005baa; }
-    .pumb { background: #e30613; }
-    .abank { background: #ff9900; }
+
+    .privat { background: #1ba548; }
+    .mono { background: #000; }
+    .oschad { background: #005bbb; }
+    .pumb { background: #e31e24; }
+    .abank { background: #f18700; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h2>🎉 Переказ коштів 🎉</h2>
-    <p>Скористайтесь QR або кнопкою для швидкого переказу</p>
-    
-    <img src="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=220x220" alt="QR код картки">
 
-    <button class="privat" onclick="pay('5168745611673218','https://next.privat24.ua/')">Приват24</button>
-    <button class="mono" onclick="pay('5168745611673218','https://www.monobank.ua/')">Monobank</button>
-    <button class="oschad" onclick="pay('5168745611673218','https://online.oschadbank.ua/')">Ощадбанк</button>
-    <button class="pumb" onclick="pay('5168745611673218','https://ibank.pumb.ua/')">ПУМБ</button>
-    <button class="abank" onclick="pay('5168745611673218','https://online.abank24.ua/')">А-Банк</button>
+  <div class="card">
+    <h1>🎉 Переказ коштів 🎉</h1>
+    <p>Скористайтесь QR або кнопкою для швидкого переказу</p>
+
+    <div class="qr">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=200x200" alt="QR код">
+    </div>
+
+    <button class="btn privat" onclick="pay('5168745611673218','privat24://sendmoney?card=5168745611673218')">Приват24</button>
+    <button class="btn mono" onclick="pay('5168745611673218','monobank://')">Monobank</button>
+    <button class="btn oschad" onclick="pay('5168745611673218','https://online.oschadbank.ua/')">Ощадбанк</button>
+    <button class="btn pumb" onclick="pay('5168745611673218','pumb://')">ПУМБ</button>
+    <button class="btn abank" onclick="pay('5168745611673218','abank24://')">А-Банк</button>
   </div>
 
   <script>
     function pay(card, url) {
+      // копіює картку
       navigator.clipboard.writeText(card).then(() => {
         alert("Номер картки скопійовано!");
-        window.open(url, "_blank");
+        // відкриває додаток або сайт
+        window.location.href = url;
       });
     }
   </script>
+
 </body>
 </html>
