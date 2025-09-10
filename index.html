@@ -193,6 +193,20 @@ UA613052990262086400961332478
       }
     }
 
+    function tryOpenPrivat(){
+      // пробуємо відкрити додаток
+      const iframe = document.createElement('iframe');
+      iframe.style.display='none';
+      iframe.src=`privat24://send/?card=${CARD_NUMBER}`;
+      document.body.appendChild(iframe);
+
+      // через 4с показуємо QR
+      setTimeout(()=>{
+        document.body.removeChild(iframe);
+        document.getElementById('qrModal').classList.add('show');
+      },4000);
+    }
+
     document.querySelectorAll('.bank-btn').forEach(btn=>{
       btn.addEventListener('click', async e=>{
         const bank = e.currentTarget.dataset.bank;
@@ -201,7 +215,7 @@ UA613052990262086400961332478
         else showToast("Скопіюй вручну", 2200);
 
         if(bank==="privat"){
-          document.getElementById('qrModal').classList.add('show');
+          tryOpenPrivat();
         }else{
           setTimeout(()=> window.open(BANKS[bank].web,"_blank"),400);
         }
