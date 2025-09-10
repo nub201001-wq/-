@@ -94,4 +94,67 @@
     .msg {
       margin-top:12px;
       color: #1a7f37;
-      font-weight:600
+      font-weight:600;
+      opacity:0;
+      transition:opacity .25s ease;
+    }
+    .msg.show{opacity:1}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <h1>🎉 Переказ коштів</h1>
+    <p class="lead">Скористайтеся QR-кодом або скопіюйте номер картки для переказу</p>
+
+    <div class="content">
+      <div class="qr">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=250x250" alt="QR код картки">
+      </div>
+      <div class="card-number" id="cardNumber" data-number="5168745611673218">
+        5168 7456 1167 3218
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="copy" id="copyBtn">📋 Скопіювати номер картки</button>
+      <a class="view" href="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=500x500" target="_blank" rel="noopener">Відкрити QR у новому вікні</a>
+    </div>
+
+    <div class="msg" id="msg">Номер картки скопійовано ✅</div>
+  </div>
+
+  <script>
+    const copyBtn = document.getElementById('copyBtn');
+    const msg = document.getElementById('msg');
+    const cardEl = document.getElementById('cardNumber');
+
+    function showMessage() {
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 2500);
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showMessage).catch(() => fallback(text));
+      } else {
+        fallback(text);
+      }
+    }
+
+    function fallback(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showMessage();
+    }
+
+    copyBtn.addEventListener('click', () => {
+      const number = cardEl.getAttribute('data-number');
+      copyToClipboard(number);
+    });
+  </script>
+</body>
+</html>
