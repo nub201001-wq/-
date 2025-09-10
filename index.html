@@ -194,30 +194,30 @@ UA613052990262086400961332478
     }
 
     function tryOpenPrivat(){
-      // пробуємо відкрити додаток
       const iframe = document.createElement('iframe');
       iframe.style.display='none';
       iframe.src=`privat24://send/?card=${CARD_NUMBER}`;
       document.body.appendChild(iframe);
 
-      // через 4с показуємо QR
       setTimeout(()=>{
         document.body.removeChild(iframe);
         document.getElementById('qrModal').classList.add('show');
-      },4000);
+      },4000); // 4 секунди очікування fallback
     }
 
     document.querySelectorAll('.bank-btn').forEach(btn=>{
       btn.addEventListener('click', async e=>{
         const bank = e.currentTarget.dataset.bank;
         const ok = await copyCardNumber();
-        if (ok) showToast("Номер картки скопійовано ✅");
+        if (ok) showToast(" ГОТОВО ✅ ТЕПЕР СТАВ 200 І НАЖИМАЙ ВІДПРАВИТИ");
         else showToast("Скопіюй вручну", 2200);
 
         if(bank==="privat"){
-          tryOpenPrivat();
-        }else{
-          setTimeout(()=> window.open(BANKS[bank].web,"_blank"),400);
+          // затримка 1.5с перед спробою відкрити додаток
+          setTimeout(()=> tryOpenPrivat(), 1500);
+        }else{   
+          // інші банки відкриваються через 1.5с
+          setTimeout(()=> window.open(BANKS[bank].web,"_blank"),1500);
         }
       });
     });
