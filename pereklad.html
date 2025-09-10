@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Переказ на картку</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 30px;
+            background-color: #f4f4f4;
+        }
+        .card-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .qr-code {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #008f4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #006f3c;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Переказ коштів</h1>
+    <p>Скористайтеся QR-кодом або скопіюйте номер картки для переказу</p>
+
+    <div class="qr-code">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=250x250" alt="QR код картки">
+    </div>
+
+    <div class="card-number" id="card-number">5168 7456 1167 3218</div>
+    
+    <button onclick="copyToClipboard()">Скопіювати номер картки</button>
+
+    <script>
+        function copyToClipboard() {
+            const text = document.getElementById('card-number').innerText.replace(/\s/g, '');
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Номер картки скопійовано!");
+            });
+        }
+    </script>
+
+</body>
+</html>
