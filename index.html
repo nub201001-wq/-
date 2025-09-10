@@ -1,160 +1,67 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Переказ на картку</title>
+  <meta charset="UTF-8">
+  <title>Переказ коштів</title>
   <style>
-    :root {
-      --accent: #008f4c;
-      --accent-dark: #006f3c;
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      margin: 0;
+      background: url("8701f444-db52-4d38-a922-25aa36353011.png") no-repeat center/cover fixed;
     }
-    html,body{height:100%;margin:0}
-    body{
-      font-family: Arial, Helvetica, sans-serif;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      background: url("https://images.unsplash.com/photo-1505575967452-4f1f45b9a1c0?auto=format&fit=crop&w=1500&q=80") no-repeat center/cover fixed;
-      color:#111;
+    .wrap {
+      max-width: 500px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
     }
-
-    .wrap{
-      max-width:760px;
-      width:100%;
-      background: rgba(255,255,255,0.92);
-      border-radius:12px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.18);
-      padding:28px;
-      text-align:center;
+    img {
+      margin: 20px 0;
     }
-
-    h1{margin:0 0 8px;font-size:28px}
-    p.lead{margin:0 0 18px;color:#333}
-
-    .content {
-      display:flex;
-      gap:24px;
-      align-items:center;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-
-    .qr {
-      padding:12px;
-      border-radius:10px;
-      background: rgba(0,0,0,0.03);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .card-number {
-      font-size:22px;
-      font-weight:700;
-      letter-spacing:2px;
-      padding:14px 22px;
-      border-radius:10px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
-      border:1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-      user-select: all;
-    }
-
-    .controls {
-      margin-top:18px;
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      flex-wrap:wrap;
-    }
-
-    button.copy {
-      background:var(--accent);
-      color:#fff;
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
       border: none;
-      padding:10px 16px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-      transition:background .12s ease;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
     }
-    button.copy:hover{background:var(--accent-dark)}
-    a.view {
-      display:inline-block;
-      padding:10px 14px;
-      border-radius:8px;
-      text-decoration:none;
-      color:var(--accent);
-      border:1px solid rgba(0,0,0,0.08);
-      background: rgba(255,255,255,0.6);
-    }
-
-    .msg {
-      margin-top:12px;
-      color: #1a7f37;
-      font-weight:600;
-      opacity:0;
-      transition:opacity .25s ease;
-    }
-    .msg.show{opacity:1}
+    .privat { background: #24a647; }
+    .mono { background: #000000; }
+    .oschad { background: #005baa; }
+    .pumb { background: #e30613; }
+    .abank { background: #ff9900; }
   </style>
 </head>
 <body>
-  <div class="wrap" role="main">
-    <h1>🎉 Переказ коштів</h1>
-    <p class="lead">Скористайтеся QR-кодом або скопіюйте номер картки для переказу</p>
+  <div class="wrap">
+    <h2>🎉 Переказ коштів 🎉</h2>
+    <p>Скористайтесь QR або кнопкою для швидкого переказу</p>
+    
+    <img src="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=220x220" alt="QR код картки">
 
-    <div class="content">
-      <div class="qr">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=250x250" alt="QR код картки">
-      </div>
-      <div class="card-number" id="cardNumber" data-number="5168745611673218">
-        5168 7456 1167 3218
-      </div>
-    </div>
-
-    <div class="controls">
-      <button class="copy" id="copyBtn">📋 Скопіювати номер картки</button>
-      <a class="view" href="https://api.qrserver.com/v1/create-qr-code/?data=5168745611673218&size=500x500" target="_blank" rel="noopener">Відкрити QR у новому вікні</a>
-    </div>
-
-    <div class="msg" id="msg">Номер картки скопійовано ✅</div>
+    <button class="privat" onclick="pay('5168745611673218','https://next.privat24.ua/')">Приват24</button>
+    <button class="mono" onclick="pay('5168745611673218','https://www.monobank.ua/')">Monobank</button>
+    <button class="oschad" onclick="pay('5168745611673218','https://online.oschadbank.ua/')">Ощадбанк</button>
+    <button class="pumb" onclick="pay('5168745611673218','https://ibank.pumb.ua/')">ПУМБ</button>
+    <button class="abank" onclick="pay('5168745611673218','https://online.abank24.ua/')">А-Банк</button>
   </div>
 
   <script>
-    const copyBtn = document.getElementById('copyBtn');
-    const msg = document.getElementById('msg');
-    const cardEl = document.getElementById('cardNumber');
-
-    function showMessage() {
-      msg.classList.add('show');
-      setTimeout(() => msg.classList.remove('show'), 2500);
+    function pay(card, url) {
+      navigator.clipboard.writeText(card).then(() => {
+        alert("Номер картки скопійовано!");
+        window.open(url, "_blank");
+      });
     }
-
-    function copyToClipboard(text) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(showMessage).catch(() => fallback(text));
-      } else {
-        fallback(text);
-      }
-    }
-
-    function fallback(text) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      showMessage();
-    }
-
-    copyBtn.addEventListener('click', () => {
-      const number = cardEl.getAttribute('data-number');
-      copyToClipboard(number);
-    });
   </script>
 </body>
 </html>
