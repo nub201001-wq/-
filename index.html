@@ -68,6 +68,11 @@
       .wrap { padding:18px; border-radius:12px; max-width:94vw; }
       .bank-btn { padding:12px 14px; font-size:16px; grid-template-columns: 44px 1fr; gap:10px; }
       .bank-btn img { width:42px; }
+      /* компактний плеєр */
+      #spotify-player {
+        width: 220px !important;
+        height: 120px !important;
+      }
     }
 
     .toast {
@@ -229,5 +234,16 @@ UA613052990262086400961332478
       if(e.target.id==="qrModal") e.currentTarget.classList.remove('show');
     });
   </script>
+
+  <!-- Spotify плеєр у правому верхньому куті -->
+  <iframe id="spotify-player"
+          style="position:fixed; top:10px; right:10px; border-radius:12px; z-index:9999;"
+          src="https://open.spotify.com/embed/album/7cPt13UZ75NViCyw0ey6Qc?utm_source=generator&theme=0"
+          width="300"
+          height="152"
+          frameborder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy">
+  </iframe>
 </body>
 </html>
